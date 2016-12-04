@@ -36,38 +36,38 @@
             }
         }
 
-        var ReactFormValidation = function ReactFormValidation() {
-            _classCallCheck(this, ReactFormValidation);
+        var ReactFormValidations = function ReactFormValidations() {
+            _classCallCheck(this, ReactFormValidations);
         };
 
-        ReactFormValidation._createErrorMessage = function (e, m, s) {
+        ReactFormValidations._createErrorMessage = function (e, m, s) {
             return e || m + ' is ' + s;
         };
 
-        ReactFormValidation.Required = function (m, v, e) {
-            return v && v.length > 0 ? true : ReactFormValidation._createErrorMessage(e, m, 'required');
+        ReactFormValidations.Required = function (m, v, e) {
+            return v && v.length > 0 ? true : ReactFormValidations._createErrorMessage(e, m, 'required');
         };
 
-        ReactFormValidation.IsNumber = function (m, v, e) {
-            return v && !isNaN(v) ? true : ReactFormValidation._createErrorMessage(e, m, 'not a number');
+        ReactFormValidations.IsNumber = function (m, v, e) {
+            return v && !isNaN(v) ? true : ReactFormValidations._createErrorMessage(e, m, 'not a number');
         };
 
-        ReactFormValidation.MinLength = function (m, v, n, e) {
-            return v && v.length >= n ? true : ReactFormValidation._createErrorMessage(e, m, 'less than ' + n);
+        ReactFormValidations.MinLength = function (m, v, n, e) {
+            return v && v.length >= n ? true : ReactFormValidations._createErrorMessage(e, m, 'less than ' + n + ' characters');
         };
 
-        ReactFormValidation.MaxLength = function (m, v, n, e) {
-            return v && v.length <= n ? true : ReactFormValidation._createErrorMessage(e, m, 'greater than ' + n);
+        ReactFormValidations.MaxLength = function (m, v, n, e) {
+            return v && v.length <= n ? true : ReactFormValidations._createErrorMessage(e, m, 'greater than ' + n + ' characters');
         };
 
-        ReactFormValidation.Min = function (m, v, n, e) {
-            return v && parseInt(v) >= n ? true : ReactFormValidation._createErrorMessage(e, m, 'less than ' + n);
+        ReactFormValidations.Min = function (m, v, n, e) {
+            return v && parseInt(v) >= n ? true : ReactFormValidations._createErrorMessage(e, m, 'less than ' + n);
         };
 
-        ReactFormValidation.Max = function (m, v, n, e) {
-            return v && parseInt(v) <= n ? true : ReactFormValidation._createErrorMessage(e, m, 'greater than ' + n);
+        ReactFormValidations.Max = function (m, v, n, e) {
+            return v && parseInt(v) <= n ? true : ReactFormValidations._createErrorMessage(e, m, 'greater than ' + n);
         };
 
-        exports.default = ReactFormValidation;
+        exports.default = ReactFormValidations;
     });
 });

@@ -24,15 +24,15 @@ export default class ReactForm extends Component {
     }
 
     componentWillMount(props = this.props, state = this.state) {
-        this.tempState = { validation: {}, model: {} };
+        this.tempState = { model: {}, validations: {} };
         this.children = React.Children.map(props.children, element => this._updateChild(element, state));
         this.tempState.model = {
             ...state.model,
             ...this.tempState.model,
         };
-        this.tempState.validation = {
-            ...state.validation,
-            ...this.tempState.validation,
+        this.tempState.validations = {
+            ...state.validations,
+            ...this.tempState.validations,
         };
         this.setState(this.tempState, this._updateValidation);
     }
@@ -51,11 +51,11 @@ export default class ReactForm extends Component {
     getValidations = () => this.state.validations;
 
     getFullError = (modelName, state = this.state) => {
-        const { validation } = state;
+        const { validations } = state;
 
         let result = '';
-        if (validation && validation[modelName]) {
-            validation[modelName].map((x, i) => {
+        if (validations && validations[modelName]) {
+            validations[modelName].map((x, i) => {
                 if (x !== true) {
                     result += `${i > 0 ? '\n' : ''}${x}`;
                 }
@@ -69,7 +69,7 @@ export default class ReactForm extends Component {
     isValid = () => this.state.isValid;
 
     _handleChange = (modelName, evt, validationFuncs, customOnChange) => {
-        const { model, validation } = this.state;
+        const { model, validations } = this.state;
 
         const value = evt.target.value;
         this.setState({
@@ -77,8 +77,8 @@ export default class ReactForm extends Component {
                     ...model,
                     [modelName]: value,
                 },
-                validation: {
-                    ...validation,
+                validations: {
+                    ...validations,
                     [modelName]: this._checkValidation(validationFuncs, modelName, value),
                 },
             },
@@ -94,9 +94,9 @@ export default class ReactForm extends Component {
     }
 
     _updateValidation() {
-        const { validation, isValid } = this.state;
-        const newIsValid = Object.keys(validation).filter(x => validation[x] &&
-        validation[x].filter(y => y !== true).length > 0).length === 0;
+        const { validations, isValid } = this.state;
+        const newIsValid = Object.keys(validations).filter(x => validations[x] &&
+        validations[x].filter(y => y !== true).length > 0).length === 0;
 
         if (newIsValid !== isValid) {
             this.setState({
@@ -118,7 +118,7 @@ export default class ReactForm extends Component {
             if (element.props.value !== undefined || !state.model[modelName]) {
                 const value = element.props.defaultValue || element.props.value;
                 this.tempState.model[modelName] = value;
-                this.tempState.validation[modelName] = this._checkValidation(validationFuncs, modelName, value);
+                this.tempState.validations[modelName] = this._checkValidation(validationFuncs, modelName, value);
             }
             const newElement = React.cloneElement(element, {
                 onChange: evt => this._handleChange(modelName, evt, validationFuncs, element.props.onChange),
@@ -138,8 +138,8 @@ export default class ReactForm extends Component {
         return element;
     }
 
-    _checkValidationForStyles(validation, errorStyle) {
-        if (!validation || validation.filter(x => x !== true).length === 0) {
+    _checkValidationForStyles(validations, errorStyle) {
+        if (!validations || validations.filter(x => x !== true).length === 0) {
             return null;
         }
 
@@ -152,7 +152,7 @@ export default class ReactForm extends Component {
         }
 
         const { styleError, classNameError } = this.props;
-        const { validation } = this.state;
+        const { validations } = this.state;
 
         const modelName = element.props['data-model'];
         const errorFor = element.props['data-error-for'];
@@ -161,8 +161,8 @@ export default class ReactForm extends Component {
             return (
                 <span
                     key={i}
-                    style={this._checkValidationForStyles(validation[modelName], styleError)}
-                    className={this._checkValidationForStyles(validation[modelName], classNameError)}
+                    style={this._checkValidationForStyles(validations[modelName], styleError)}
+                    className={this._checkValidationForStyles(validations[modelName], classNameError)}
                 >{element}</span>
             );
         } else if (errorFor) {

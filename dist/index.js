@@ -139,12 +139,12 @@
 
                 _this.getFullError = function (modelName) {
                     var state = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _this.state;
-                    var validation = state.validation;
+                    var validations = state.validations;
 
 
                     var result = '';
-                    if (validation && validation[modelName]) {
-                        validation[modelName].map(function (x, i) {
+                    if (validations && validations[modelName]) {
+                        validations[modelName].map(function (x, i) {
                             if (x !== true) {
                                 result += '' + (i > 0 ? '\n' : '') + x;
                             }
@@ -162,13 +162,13 @@
                 _this._handleChange = function (modelName, evt, validationFuncs, customOnChange) {
                     var _this$state = _this.state,
                         model = _this$state.model,
-                        validation = _this$state.validation;
+                        validations = _this$state.validations;
 
 
                     var value = evt.target.value;
                     _this.setState({
                         model: _extends({}, model, _defineProperty({}, modelName, value)),
-                        validation: _extends({}, validation, _defineProperty({}, modelName, _this._checkValidation(validationFuncs, modelName, value)))
+                        validations: _extends({}, validations, _defineProperty({}, modelName, _this._checkValidation(validationFuncs, modelName, value)))
                     }, _this._updateValidation);
 
                     if (customOnChange) {
@@ -184,7 +184,7 @@
                     var _this$props = _this.props,
                         styleError = _this$props.styleError,
                         classNameError = _this$props.classNameError;
-                    var validation = _this.state.validation;
+                    var validations = _this.state.validations;
 
 
                     var modelName = element.props['data-model'];
@@ -195,8 +195,8 @@
                             'span',
                             {
                                 key: i,
-                                style: _this._checkValidationForStyles(validation[modelName], styleError),
-                                className: _this._checkValidationForStyles(validation[modelName], classNameError)
+                                style: _this._checkValidationForStyles(validations[modelName], styleError),
+                                className: _this._checkValidationForStyles(validations[modelName], classNameError)
                             },
                             element
                         );
@@ -236,12 +236,12 @@
                     var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props;
                     var state = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.state;
 
-                    this.tempState = { validation: {}, model: {} };
+                    this.tempState = { model: {}, validations: {} };
                     this.children = _react2.default.Children.map(props.children, function (element) {
                         return _this2._updateChild(element, state);
                     });
                     this.tempState.model = _extends({}, state.model, this.tempState.model);
-                    this.tempState.validation = _extends({}, state.validation, this.tempState.validation);
+                    this.tempState.validations = _extends({}, state.validations, this.tempState.validations);
                     this.setState(this.tempState, this._updateValidation);
                 }
             }, {
@@ -265,11 +265,11 @@
                 key: '_updateValidation',
                 value: function _updateValidation() {
                     var _state = this.state,
-                        validation = _state.validation,
+                        validations = _state.validations,
                         isValid = _state.isValid;
 
-                    var newIsValid = Object.keys(validation).filter(function (x) {
-                        return validation[x] && validation[x].filter(function (y) {
+                    var newIsValid = Object.keys(validations).filter(function (x) {
+                        return validations[x] && validations[x].filter(function (y) {
                             return y !== true;
                         }).length > 0;
                     }).length === 0;
@@ -298,7 +298,7 @@
                             if (element.props.value !== undefined || !state.model[modelName]) {
                                 var value = element.props.defaultValue || element.props.value;
                                 _this3.tempState.model[modelName] = value;
-                                _this3.tempState.validation[modelName] = _this3._checkValidation(validationFuncs, modelName, value);
+                                _this3.tempState.validations[modelName] = _this3._checkValidation(validationFuncs, modelName, value);
                             }
                             var newElement = _react2.default.cloneElement(element, {
                                 onChange: function onChange(evt) {
@@ -326,8 +326,8 @@
                 }
             }, {
                 key: '_checkValidationForStyles',
-                value: function _checkValidationForStyles(validation, errorStyle) {
-                    if (!validation || validation.filter(function (x) {
+                value: function _checkValidationForStyles(validations, errorStyle) {
+                    if (!validations || validations.filter(function (x) {
                         return x !== true;
                     }).length === 0) {
                         return null;
