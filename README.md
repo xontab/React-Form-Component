@@ -1,5 +1,6 @@
 # React Forms Component
 Form Component including validation for React
+[![npm version](https://badge.fury.io/js/react-forms-component.svg)](https://badge.fury.io/js/react-forms-component)
 
 **Table of Contents**
 
