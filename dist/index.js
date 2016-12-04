@@ -134,7 +134,7 @@
                 };
 
                 _this.getValidations = function () {
-                    return _this.state.validation;
+                    return _this.state.validations;
                 };
 
                 _this.getFullError = function (modelName) {
@@ -161,8 +161,8 @@
 
                 _this._handleChange = function (modelName, evt, validationFuncs, customOnChange) {
                     var _this$state = _this.state,
-                        validation = _this$state.validation,
-                        model = _this$state.model;
+                        model = _this$state.model,
+                        validation = _this$state.validation;
 
 
                     var value = evt.target.value;
@@ -177,6 +177,10 @@
                 };
 
                 _this._renderElement = function (element, i) {
+                    if (!element.props) {
+                        return element;
+                    }
+
                     var _this$props = _this.props,
                         styleError = _this$props.styleError,
                         classNameError = _this$props.classNameError;
@@ -207,13 +211,19 @@
                         }));
                     }
 
+                    if (element.props.children) {
+                        return _react2.default.cloneElement(element, null, element.props.children.map(function (x, i2) {
+                            return _this._renderElement(x, i2);
+                        }));
+                    }
+
                     return element;
                 };
 
                 _this.state = {
                     isValid: true,
                     model: {},
-                    validation: {}
+                    validations: {}
                 };
                 return _this;
             }
@@ -230,8 +240,8 @@
                     this.children = _react2.default.Children.map(props.children, function (element) {
                         return _this2._updateChild(element, state);
                     });
-                    this.tempState.validation = _extends({}, state.validation, this.tempState.validation);
                     this.tempState.model = _extends({}, state.model, this.tempState.model);
+                    this.tempState.validation = _extends({}, state.validation, this.tempState.validation);
                     this.setState(this.tempState, this._updateValidation);
                 }
             }, {
@@ -277,10 +287,14 @@
                 value: function _updateChild(element, state) {
                     var _this3 = this;
 
+                    if (!element.props) {
+                        return element;
+                    }
+
                     var modelName = element.props['data-model'];
                     if (modelName) {
                         var _ret = function () {
-                            var validationFuncs = element.props['data-validation'];
+                            var validationFuncs = element.props['data-validations'];
                             if (element.props.value !== undefined || !state.model[modelName]) {
                                 var value = element.props.defaultValue || element.props.value;
                                 _this3.tempState.model[modelName] = value;
@@ -299,6 +313,15 @@
 
                         if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
                     }
+
+                    if (element.props.children) {
+                        var _newElement = _react2.default.cloneElement(element, {}, _react2.default.Children.map(element.props.children, function (childElement) {
+                            return _this3._updateChild(childElement, state);
+                        }));
+
+                        return _newElement;
+                    }
+
                     return element;
                 }
             }, {
@@ -333,32 +356,9 @@
             onValidationChange: _react.PropTypes.func
         };
         ReactForm.defaultProps = {
-            styleError: {
-                border: '1px solid red',
-                display: 'inline-block'
-            }
+            styleError: {},
+            classNameError: ''
         };
-
-        ReactForm._createErrorMessage = function (m, s) {
-            return m + ' is ' + s;
-        };
-
-        ReactForm.Required = function (m, v) {
-            return v && v.length > 0 ? true : ReactForm._createErrorMessage(m, 'required');
-        };
-
-        ReactForm.IsNumber = function (m, v) {
-            return v && !isNaN(v) ? true : ReactForm._createErrorMessage(m, 'not a number');
-        };
-
-        ReactForm.Max = function (m, v, n) {
-            return v && v <= n ? true : ReactForm._createErrorMessage(m, 'greater than ' + n);
-        };
-
-        ReactForm.Min = function (m, v, n) {
-            return v && v >= n ? true : ReactForm._createErrorMessage(m, 'less than ' + n);
-        };
-
         exports.default = ReactForm;
     });
 });

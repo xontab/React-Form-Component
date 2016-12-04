@@ -1,0 +1,23 @@
+{
+  "name": "react-forms-component-examples",
+  "version": "1.0.0",
+  "description": "React Forms Component examples",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "xonTAB",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack-dev-server": "^1.16.2",
+    "css-loader": "^0.26.1",
+    "null-loader": "^0.1.1",
+    "style-loader": "^0.13.1"
+  },
+  "dependencies": {
+    "babel-loader": "^6.2.8",
+    "react-dom": "^15.4.1",
+    "webpack": "^1.13.3"
+  }
+}
