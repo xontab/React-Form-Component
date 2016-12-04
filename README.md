@@ -1,2 +1,2 @@
-# React-Form-Component
+# ReactForms Component
 Form Component including validation for React
