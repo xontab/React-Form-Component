@@ -26,7 +26,7 @@ import ReactFormValidations from 'react-forms-component/validations';
 <ReactForm></ReactForm>
 ```
 
-### Props
+### Optional Props
 
 | Paramater | Type | Remark |
 | --- | --- | --- |
@@ -129,7 +129,7 @@ _handleClick = () => {
 
 ## Example
 
-Clone this project and run the following commands to run the Demo
+Clone this project and run the following commands to run the demo:
 
 ```js
 cd examples
