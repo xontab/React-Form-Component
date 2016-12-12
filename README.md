@@ -144,5 +144,7 @@ then open http://localhost:4001 in a web browser
 ## Credits
 
 React: http://facebook.github.io/react/
+
 Babel: http://babeljs.io/
+
 Webpack: https://webpack.github.io/docs/
