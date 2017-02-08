@@ -164,15 +164,14 @@
                         model = _this$state.model,
                         validations = _this$state.validations;
 
-
-                    var value = evt.target.value;
+                    var value = _this._getValue(model[modelName], evt.target, modelName);
                     _this.setState({
                         model: _extends({}, model, _defineProperty({}, modelName, value)),
                         validations: _extends({}, validations, _defineProperty({}, modelName, _this._checkValidation(validationFuncs, modelName, value)))
                     }, _this._updateValidation);
 
                     if (customOnChange) {
-                        customOnChange(value, modelName, evt);
+                        customOnChange(evt, modelName);
                     }
                 };
 
@@ -255,6 +254,19 @@
                     }
                 }
             }, {
+                key: '_getValue',
+                value: function _getValue(state, props, modelName, checked) {
+                    var value = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : props.value;
+                    var defaultChecked = arguments[5];
+
+                    var stateModel = this.state.model[modelName] || {};
+                    if (props.type === 'checkbox') {
+                        return _extends({}, state || {}, _defineProperty({}, props.value, props.checked || stateModel[props.value] || defaultChecked || false));
+                    }
+
+                    return value;
+                }
+            }, {
                 key: '_checkValidation',
                 value: function _checkValidation(validationFuncs, modelName, value) {
                     return validationFuncs && validationFuncs.map(function (v) {
@@ -297,7 +309,7 @@
                             var validationFuncs = element.props['data-validations'];
                             if (element.props.value !== undefined || !state.model[modelName]) {
                                 var value = element.props.defaultValue || element.props.value;
-                                _this3.tempState.model[modelName] = value;
+                                _this3.tempState.model[modelName] = _this3._getValue(_this3.tempState.model[modelName], element.props, modelName, value, element.props['data-checked']);
                                 _this3.tempState.validations[modelName] = _this3._checkValidation(validationFuncs, modelName, value);
                             }
                             var newElement = _react2.default.cloneElement(element, {
@@ -315,11 +327,11 @@
                     }
 
                     if (element.props.children) {
-                        var _newElement = _react2.default.cloneElement(element, {}, _react2.default.Children.map(element.props.children, function (childElement) {
+                        var newElement = _react2.default.cloneElement(element, {}, _react2.default.Children.map(element.props.children, function (childElement) {
                             return _this3._updateChild(childElement, state);
                         }));
 
-                        return _newElement;
+                        return newElement;
                     }
 
                     return element;
