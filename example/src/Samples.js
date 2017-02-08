@@ -65,6 +65,14 @@ export default class Samples extends Component {
                         <label>Age:</label>
                         <input type="number" data-model="age" data-validations={[(m, v) => ReactFormValidations.Min(m, v, 18, 'You must be at least 18 years old')]} />
                     </div>
+                    <div className="form-control">
+                        <div className="error-label" data-error-for="colour"></div>
+                        <label>Favourite colours:</label><br />
+                        <input type="checkbox" data-model="colour" value="red" />Red <br />
+                        <input type="checkbox" data-model="colour" value="blue" />Blue <br />
+                        <input type="checkbox" data-model="colour" value="green" />Green <br />
+                        <input type="checkbox" data-model="colour" value="orange" />Orange <br />
+                    </div>
                 </ReactForm>
                 <div className="form-control">
                     <label></label>

@@ -66,26 +66,36 @@ export default class ReactForm extends Component {
         return result;
     }
 
+    _getValue(state, props, modelName, checked, value = props.value, defaultChecked) {
+        const stateModel = this.state.model[modelName] || {};
+        if (props.type === 'checkbox') {
+            return {
+                ...state || {},
+                [props.value]: props.checked || stateModel[props.value] || defaultChecked || false,
+            };
+        }
+
+        return value;
+    }
+
     isValid = () => this.state.isValid;
 
     _handleChange = (modelName, evt, validationFuncs, customOnChange) => {
         const { model, validations } = this.state;
-
-        const value = evt.target.value;
+        const value = this._getValue(model[modelName], evt.target, modelName);
         this.setState({
-                model: {
-                    ...model,
-                    [modelName]: value,
-                },
-                validations: {
-                    ...validations,
-                    [modelName]: this._checkValidation(validationFuncs, modelName, value),
-                },
+            model: {
+                ...model,
+                [modelName]: value,
             },
-            this._updateValidation);
+            validations: {
+                ...validations,
+                [modelName]: this._checkValidation(validationFuncs, modelName, value),
+            },
+        }, this._updateValidation);
 
         if (customOnChange) {
-            customOnChange(value, modelName, evt);
+            customOnChange(evt, modelName);
         }
     }
 
@@ -117,7 +127,7 @@ export default class ReactForm extends Component {
             const validationFuncs = element.props['data-validations'];
             if (element.props.value !== undefined || !state.model[modelName]) {
                 const value = element.props.defaultValue || element.props.value;
-                this.tempState.model[modelName] = value;
+                this.tempState.model[modelName] = this._getValue(this.tempState.model[modelName], element.props, modelName, value, element.props['data-checked']);
                 this.tempState.validations[modelName] = this._checkValidation(validationFuncs, modelName, value);
             }
             const newElement = React.cloneElement(element, {
