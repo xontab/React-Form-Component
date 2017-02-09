@@ -254,6 +254,18 @@
                     }
                 }
             }, {
+                key: '_getFirstValue',
+                value: function _getFirstValue(values, defaultValue) {
+                    var value = values.find(function (x) {
+                        return x !== undefined && x !== null;
+                    });
+                    if (value !== undefined) {
+                        return value;
+                    }
+
+                    return defaultValue;
+                }
+            }, {
                 key: '_getValue',
                 value: function _getValue(state, props, modelName, checked) {
                     var value = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : props.value;
@@ -261,7 +273,7 @@
 
                     var stateModel = this.state.model[modelName] || {};
                     if (props.type === 'checkbox') {
-                        return _extends({}, state || {}, _defineProperty({}, props.value, props.checked || stateModel[props.value] || defaultChecked || false));
+                        return _extends({}, state || {}, _defineProperty({}, props.value, this._getFirstValue([props.checked, stateModel[props.value], defaultChecked], false)));
                     }
 
                     return value;
