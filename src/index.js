@@ -66,12 +66,21 @@ export default class ReactForm extends Component {
         return result;
     }
 
+    _getFirstValue(values, defaultValue) {
+        const value = values.find(x => x !== undefined && x !== null);
+        if (value !== undefined) {
+            return value;
+        }
+
+        return defaultValue;
+    }
+
     _getValue(state, props, modelName, checked, value = props.value, defaultChecked) {
         const stateModel = this.state.model[modelName] || {};
         if (props.type === 'checkbox') {
             return {
                 ...state || {},
-                [props.value]: props.checked || stateModel[props.value] || defaultChecked || false,
+                [props.value]: this._getFirstValue([props.checked, stateModel[props.value], defaultChecked], false),
             };
         }
 
