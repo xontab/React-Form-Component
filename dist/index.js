@@ -267,13 +267,12 @@
                 }
             }, {
                 key: '_getValue',
-                value: function _getValue(state, props, modelName, checked) {
-                    var value = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : props.value;
-                    var defaultChecked = arguments[5];
+                value: function _getValue(state, props, modelName) {
+                    var value = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : props.value;
 
                     var stateModel = this.state.model[modelName] || {};
                     if (props.type === 'checkbox') {
-                        return _extends({}, state || {}, _defineProperty({}, props.value, this._getFirstValue([props.checked, stateModel[props.value], defaultChecked], false)));
+                        return _extends({}, state || {}, _defineProperty({}, props.value, this._getFirstValue([props.checked, stateModel[props.value], props.defaultChecked], false)));
                     }
 
                     return value;
@@ -319,9 +318,9 @@
                     if (modelName) {
                         var _ret = function () {
                             var validationFuncs = element.props['data-validations'];
-                            if (element.props.value !== undefined || !state.model[modelName]) {
-                                var value = element.props.defaultValue || element.props.value;
-                                _this3.tempState.model[modelName] = _this3._getValue(_this3.tempState.model[modelName], element.props, modelName, value, element.props['data-checked']);
+                            var value = element.props.defaultValue || element.props.value;
+                            if (value !== undefined || !state.model[modelName]) {
+                                _this3.tempState.model[modelName] = _this3._getValue(_this3.tempState.model[modelName], element.props, modelName, value);
                                 _this3.tempState.validations[modelName] = _this3._checkValidation(validationFuncs, modelName, value);
                             }
                             var newElement = _react2.default.cloneElement(element, {

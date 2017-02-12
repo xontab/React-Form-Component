@@ -75,12 +75,12 @@ export default class ReactForm extends Component {
         return defaultValue;
     }
 
-    _getValue(state, props, modelName, checked, value = props.value, defaultChecked) {
+    _getValue(state, props, modelName, value = props.value) {
         const stateModel = this.state.model[modelName] || {};
         if (props.type === 'checkbox') {
             return {
                 ...state || {},
-                [props.value]: this._getFirstValue([props.checked, stateModel[props.value], defaultChecked], false),
+                [props.value]: this._getFirstValue([props.checked, stateModel[props.value], props.defaultChecked], false),
             };
         }
 
@@ -134,9 +134,9 @@ export default class ReactForm extends Component {
         const modelName = element.props['data-model'];
         if (modelName) {
             const validationFuncs = element.props['data-validations'];
-            if (element.props.value !== undefined || !state.model[modelName]) {
-                const value = element.props.defaultValue || element.props.value;
-                this.tempState.model[modelName] = this._getValue(this.tempState.model[modelName], element.props, modelName, value, element.props['data-checked']);
+            const value = element.props.defaultValue || element.props.value;
+            if (value !== undefined || !state.model[modelName]) {
+                this.tempState.model[modelName] = this._getValue(this.tempState.model[modelName], element.props, modelName, value);
                 this.tempState.validations[modelName] = this._checkValidation(validationFuncs, modelName, value);
             }
             const newElement = React.cloneElement(element, {

@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 
+// THE FOLLOWING REFERENCES ARE FOR SAMPLE ONLY:
 import ReactForm from '../../src';
 import ReactFormValidations from '../../src/ReactFormValidation';
+
+// USE THE FOLLOWING REFERENCES INSTEAD:
+// import ReactForm from 'react-forms-component';
+// import ReactFormValidations from 'react-forms-component/validations';
 
 import styles from './styles.css';
 
@@ -61,6 +66,15 @@ export default class Samples extends Component {
                         <input type="text" data-model="surname" />
                     </div>
                     <div className="form-control">
+                        <div className="error-label" data-error-for="gender"></div>
+                        <label>Gender:</label>
+                        <select data-model="gender" defaultValue="F">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="O">Other</option>
+                        </select>
+                    </div>
+                    <div className="form-control">
                         <div className="error-label" data-error-for="age"></div>
                         <label>Age:</label>
                         <input type="number" data-model="age" data-validations={[(m, v) => ReactFormValidations.Min(m, v, 18, 'You must be at least 18 years old')]} />
@@ -69,7 +83,7 @@ export default class Samples extends Component {
                         <div className="error-label" data-error-for="colour"></div>
                         <label>Favourite colours:</label><br />
                         <input type="checkbox" data-model="colour" value="red" />Red <br />
-                        <input type="checkbox" data-model="colour" value="blue" />Blue <br />
+                        <input type="checkbox" data-model="colour" value="blue" defaultChecked={true} />Blue <br />
                         <input type="checkbox" data-model="colour" value="green" />Green <br />
                         <input type="checkbox" data-model="colour" value="orange" />Orange <br />
                     </div>
